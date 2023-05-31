@@ -1,37 +1,27 @@
-from AbstractSolution import AbstractSolution
-from AbstractTestProblem import AbstractTestProblem
 
-class Solution1(AbstractSolution):
-    number = AbstractSolution.next_solution()
+from AbstractSolution import AbstractSolution as AS
+from AbstractTest import AbstractTest as AT
 
-    def solve(self, input):
-        return 1
-    
+
+class Solution1(AS):
+    def solve(self, a, b):
+        return a * b + 1
+
     def run(self):
-        print("hello" + str(self.number))
+        self.solve(5, 5) # doesn't print result
 
 
-class Solution2(AbstractSolution):
-    number = AbstractSolution.next_solution()
+class Solution2(AS):
+    def solve(self, a, b):
+        return sum([a for _ in range(0, b)]) + 1
 
-    def solve(self, input):
-        return 2
-    
     def run(self):
-        print("hello" + str(self.number))
+        return self.solve(5, 5) # print result
 
 
-class TestProblem(AbstractTestProblem):
-    def get_solution_classes(self):
-        return [Solution1, Solution2]
-
+class Test(AT):
     def test_case1(self):
-        input = ""
-        expected_output = 3
-        self.run_test_case(input, expected_output)
+        self.run_assert(self.assertEqual, (5, 5), 25)
 
     def test_case2(self):
-        input = ""
-        expected_output = 2
-        self.run_test_case(input, expected_output)
-
+        self.run_assert(self.assertEqual, (10, 10), 100, msg="extra msg")

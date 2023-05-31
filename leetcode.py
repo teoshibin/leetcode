@@ -1,14 +1,11 @@
 import unittest
 import importlib
 import argparse
-import os
-import json
 
 from AbstractSolution import AbstractSolution
 
-HISTORY_FILE = "history.json"
 PROBLEMS_DIR = "problems"
-TEMPLATE_FILE = "template.py"  # This is the template file you should create
+TEMPLATE_FILE = "template.py"
 
 
 def create_problem_file(problem_number):
@@ -20,28 +17,17 @@ def create_problem_file(problem_number):
         file.write(template)
 
 
-# def update_history(problem_number):
-#     with open(HISTORY_FILE, "w") as file:
-#         json.dump({"last_problem": problem_number}, file)
-
-
-# def get_last_problem():
-#     if os.path.exists(HISTORY_FILE):
-#         with open(HISTORY_FILE, "r") as file:
-#             data = json.load(file)
-#             return data.get("last_problem")
-#     return None
-
-
 def run_test(problem_number, solution_number=None):
     problem_module = f"{PROBLEMS_DIR}.problem_{problem_number}"
 
     try:
         module = importlib.import_module(problem_module)
 
-        test_class = getattr(module, "TestProblem")
+        test_class = getattr(module, "Test")
 
         # Set the solution_number class variable
+        if solution_number == None:
+            print("No solution number given, testing all solutions\n")
         test_class.solution_number = solution_number
 
         # Run the tests
@@ -63,15 +49,18 @@ def run_solution(problem_number, solution_number=None):
             cls, type) and issubclass(cls, AbstractSolution) and cls.__module__ == module.__name__]
 
         if solution_number is not None:
-            solution_classes = [cls for cls in solution_classes if cls.number == solution_number] # type: ignore
+            solution_classes = [
+                cls for cls in solution_classes if cls.number == solution_number]  # type: ignore
 
         for solution_class in solution_classes:
             solution = solution_class()
-            solution.run()
+            out = solution.run()
+            if out:
+                print(solution_class.__name__ + ":")
+                print(out)
 
     except ModuleNotFoundError:
         print(f"Problem {problem_number} not found")
-
 
 
 def main():
@@ -85,30 +74,17 @@ def main():
                         help='Specify a solution number.')
     parser.add_argument('-c', '--create', type=int,
                         help='Create a new problem file from template.')
-    # parser.add_argument('-u', '--update', type=int,
-    #                     help='Update the history to specific problem number.')
 
     args = parser.parse_args()
 
-    if args.test:
+    if args.test or args.test == 0:
         run_test(args.test, args.solution)
-        # update_history(args.test)
     elif args.run:
         run_solution(args.run, args.solution)
-        # update_history(args.run)
     elif args.create:
         create_problem_file(args.create)
         print(f"Problem {args.create} has been created.")
-    # elif args.update:
-        # update_history(args.update)
-        # print(f"History updated to number {args.update}.")
     else:
-        # last_problem = get_last_problem()
-        # if last_problem:
-        #     print(f"Running last executed problem: {last_problem}")
-        #     run_test(last_problem)
-        # else:
-        #     print("No problem number provided and history not found.")
         print("No problem number provided.")
 
 
