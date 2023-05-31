@@ -9,6 +9,7 @@ class Solution1(AS):
 
     def run(self):
         self.solve(5, 5) # doesn't print result
+        print("hello world")
 
 
 class Solution2(AS):
