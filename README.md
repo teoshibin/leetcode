@@ -105,3 +105,6 @@ OK
 ```
 
 > It is highly possible that some input or output scenario aren't handled, as there are thousands of questions and I'm not working in meta so I won't bother adding support until I encounter them myself.
+
+## License
+[MIT](LICENSE)
