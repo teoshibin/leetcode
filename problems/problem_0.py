@@ -5,7 +5,7 @@ from AbstractTest import AbstractTest as AT
 
 class Solution1(AS):
     def solve(self, a, b):
-        return a * b + 1
+        return a * b
 
     def run(self):
         self.solve(5, 5) # doesn't print result
@@ -13,7 +13,7 @@ class Solution1(AS):
 
 class Solution2(AS):
     def solve(self, a, b):
-        return sum([a for _ in range(0, b)]) + 1
+        return sum([a for _ in range(0, b)])
 
     def run(self):
         return self.solve(5, 5) # print result
