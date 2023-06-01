@@ -3,9 +3,7 @@ import unittest
 import importlib
 import os
 
-from core.solution_manager import SolutionManager
-
-from .abstract_solution import AbstractSolution
+from .abstract_solution import SolutionMeta
 
 
 PROBLEMS_DIR = "problems"
@@ -13,10 +11,6 @@ TEMPLATE_FILE = os.path.join("core","template.py")
 
 
 class ProblemHandler:
-    def __init__(self):
-        self.solution_manager = SolutionManager()
-        pass
-
 
     def _problem_module(self, problem_number: int) -> str:
         """
@@ -44,6 +38,12 @@ class ProblemHandler:
             raise FileNotFoundError(f"Problem {problem_number} not found")
 
         return f"{PROBLEMS_DIR}.{problem_file}"
+
+
+    def _get_solution_classes(self, solution_number: int | None):
+        if solution_number is not None:
+            return [s for s in SolutionMeta.solutions if s.number == solution_number]
+        return SolutionMeta.solutions
 
 
     def create_problem_file(self, problem_number: int, custom_name: str = "") -> None:
@@ -89,11 +89,7 @@ class ProblemHandler:
         try:
             module = importlib.import_module(self._problem_module(problem_number))
             test_class = getattr(module, "Test")
-
-            # Set the solution_number class variable
-            if solution_number == None:
-                print("No solution number given, testing all solutions\n")
-            test_class.solution_number = solution_number
+            test_class.solution_classes = self._get_solution_classes(solution_number)
 
             # Run the tests
             suite = unittest.defaultTestLoader.loadTestsFromTestCase(test_class)
@@ -119,17 +115,10 @@ class ProblemHandler:
         """
         try:
             # Dynamically import the module
-            module = importlib.import_module(self._problem_module(problem_number))
+            importlib.import_module(self._problem_module(problem_number))
 
             # Get the solution classes
-            solution_classes = [cls for cls in module.__dict__.values()
-                                if isinstance(cls, type)
-                                and issubclass(cls, AbstractSolution)
-                                and cls.__module__ == module.__name__]
-
-            if solution_number is not None:
-                solution_classes = [cls for cls in solution_classes
-                                    if cls.number == solution_number]
+            solution_classes = self._get_solution_classes(solution_number)
 
             for solution_class in solution_classes:
                 solution = solution_class()

@@ -1,6 +1,7 @@
 import argparse
 
-from core.problem_handler import ProblemHandler
+from core import ProblemHandler
+
 
 def main():
     parser = argparse.ArgumentParser(description='Run or create LeetCode problem tests.')
@@ -18,7 +19,7 @@ def main():
     # TODO(invalid argument check)
     if args.test or args.test == 0:
         problem_handler.run_test(args.test, args.solution)
-    elif args.run:
+    elif args.run or args.run == 0:
         problem_handler.run_solution(args.run, args.solution)
     elif args.create:
         problem_handler.create_problem_file(args.create, args.name)
