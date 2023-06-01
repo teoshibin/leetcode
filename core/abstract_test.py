@@ -2,8 +2,8 @@
 import unittest
 import inspect
 
-from .AbstractSolution import SolutionMeta
-from .Logger import Logger
+from .abstract_solution import SolutionMeta
+from .logger import Logger
 
 
 class AbstractTest(unittest.TestCase):

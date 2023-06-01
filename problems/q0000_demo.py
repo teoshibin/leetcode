@@ -1,6 +1,6 @@
 
-from  core.AbstractSolution import AbstractSolution as AS
-from core.AbstractTest import AbstractTest as AT
+from  core.abstract_solution import AbstractSolution as AS
+from core.abstract_test import AbstractTest as AT
 
 
 class Solution1(AS):
