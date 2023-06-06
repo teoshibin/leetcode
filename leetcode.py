@@ -1,9 +1,14 @@
 import argparse
 
 from core import ProblemHandler
+from core import HistoryHandler
 
 
 def main():
+
+    problem_handler = ProblemHandler()
+    history_handler = HistoryHandler()
+
     parser = argparse.ArgumentParser(description='Run or create LeetCode problem tests.')
     
     parser.add_argument('-t', '--test', type=int, help='Test a specific problem number.')
@@ -14,9 +19,27 @@ def main():
 
     args = parser.parse_args()
 
-    problem_handler = ProblemHandler()
+    if args.run is None and args.test is None:
+        args = argparse.Namespace()
+        if history_handler.last_type == "t":
+            args.test = history_handler.last_problem
+            args.run = None
+        else:
+            args.run = history_handler.last_problem
+            args.test = None
+        args.solution = history_handler.last_solution
+        args.create = None
+        args.name = ""
 
-    # TODO(invalid argument check)
+        print("No valid problem number provided, using history.")
+        print(f"History: -{history_handler.last_type} {history_handler.last_problem}" + 
+              (f" -s {args.solution}" if args.solution else "") + "\n")
+
+    else:
+        type = 't' if args.test is not None else 'r'
+        problem = args.test if args.test != None else args.run
+        history_handler.update(type, problem, args.solution)
+
     if args.test or args.test == 0:
         problem_handler.run_test(args.test, args.solution)
     elif args.run or args.run == 0:
@@ -27,6 +50,5 @@ def main():
     else:
         print("No problem number provided.")
 
-# Main method
 if __name__ == "__main__":
     main()

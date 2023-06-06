@@ -1,5 +1,5 @@
 
-from  core import AbstractSolution as AS
+from core import AbstractSolution as AS
 from core import AbstractTest as AT
 
 
