@@ -1,19 +1,15 @@
 
-# Leetcode Framework for Python
+# LeetCode Framework for Python
 
-This is a simple framework for test running leetcode locally. Allowing solving, running and testing.
+This Python-based framework is designed to streamline your experience of solving, running, and testing LeetCode problems locally. It takes the hassle out of running multiple solutions and their corresponding test cases, letting you focus on what matters most: problem-solving.
 
-## Template Example
+## Structure of a Problem Solution
 
-Here we have an example solving multiplication, it can be found in  [problems/q0000_demo.py](problems/q0000_demo.py).
-The idea is that each problem will have multiple solutions with the same test case and each test case can test one or more solutions.
+Every LeetCode problem is captured in a Python file, following a particular structure. To illustrate, consider the multiplication problem in [problems/q0000_demo.py](problems/q0000_demo.py). Each problem file consists of a `Test` class that encompasses multiple solutions and their test cases.
 
-> Note that class name `Test` shouldn't be changed.   
-> However, solution class name can be change e.g. `DP(AS)`, this allows naming the solution.   
-> Additionally, `Test` identify Solution based on the order that they are declared. Thus, the example below, Solution1 is 1, Solution2 is 2, this is useful to know when specifying solution number when using cli.
+Take note that the `Test` class name must remain constant, whereas solution class names (for instance, `MySolution(AS)`) can vary, facilitating descriptive solution naming. The `Test` class identifies solutions by their order of declaration. Consequently, in the example below, Solution1 equates to 1, Solution2 to 2, and so forth. This is crucial when specifying the solution number in the command-line interface (CLI).
 
 ```python
-
 from  core.AbstractSolution import AbstractSolution as AS
 from core.AbstractTest import AbstractTest as AT
 
@@ -23,7 +19,7 @@ class Solution1(AS):
         return a * b
 
     def run(self):
-        self.solve(5, 5) # doesn't print result
+        self.solve(5, 5)
         print("hello world")
 
 class Solution2(AS):
@@ -31,7 +27,7 @@ class Solution2(AS):
         return sum([a for _ in range(0, b)])
 
     def run(self):
-        return self.solve(5, 5) # print result
+        return self.solve(5, 5) # returned results are printed
 
 
 class Test(AT):
@@ -40,40 +36,45 @@ class Test(AT):
 
     def test_case2(self):
         self.run_assert(self.assertEqual, (10, 10), 100, msg="extra msg")
-
 ```
 
-## Commands
+## CLI (Command Line Interface) Usage
+
+You can execute several commands in the terminal:
 
 ```bash
-py ./leetcode.py -c 100                 # create q100.py
-py ./leetcode.py -c 100 -n same_tree    # create q100_same_tree.py
-py ./leetcode.py -r 100                 # run all solutions for problem 100
-py ./leetcode.py -r 100 -s 2            # run solution 2 for problem 100
-py ./leetcode.py -t 100                 # unit test all solutions for problem 100
-py ./leetcode.py -t 100 -s 1            # unit test solution 1 for problem 100
-
-~> py ./leetcode.py -h
-usage: leetcode.py [-h] [-t TEST] [-r RUN] [-s SOLUTION] [-c CREATE] [-n NAME]
-
-Run or create LeetCode problem tests.
-
-options:
-  -h, --help            show this help message and exit
-  -t TEST, --test TEST  Test a specific problem number.
-  -r RUN, --run RUN     Run a specific problem number.
-  -s SOLUTION, --solution SOLUTION
-                        Specify a solution number.
-  -c CREATE, --create CREATE
-                        Create a new problem file from template.
-  -n NAME, --name NAME  Specify a custom name for a new problem file.
+py ./leetcode.py -c 100                 # creates q100.py
+py ./leetcode.py -c 100 -n same_tree    # creates q100_same_tree.py
+py ./leetcode.py -r 100                 # runs all solutions for problem 100
+py ./leetcode.py -r 100 -s 2            # runs solution 2 for problem 100
+py ./leetcode.py -t 100                 # performs unit testing on all solutions for problem 100
+py ./leetcode.py -t 100 -s 1            # performs unit testing on solution 1 for problem 100
+py ./leetcode.py                        # executes the last executed command
 ```
 
-# Example Test
+For a helpful guide on using these commands, employ the `-h` flag:
+
+```bash
+py ./leetcode.py -h
+```
+
+## History and Default Execution
+
+The framework automatically records the last problem and solution number you executed (either `run` or `test`). This data is saved in a `history.json` file.
+
+If you run the command without any arguments, the system will default to executing the last problem and solution specified in the history file. If no specific solution number is available, it will execute all solutions for the last problem.
+
+## Debugging
+
+`.vscode` launch options are pre-configured to use `leetcode.py` as the entry point. So, simply set your breakpoints in your solver and press `F5` to start debugging.
+
+## Test Execution Examples
+
+Here are some examples of how to execute tests:
 
 ```bash
 ~> py ./leetcode.py -t 0
-No solution number given, testing all solutions
+No solution number provided, testing all solutions
 
 ..
 ----------------------------------------------------------------------
@@ -89,6 +90,7 @@ Ran 2 tests in 0.008s
 
 OK
 ```
+
 ```bash
 ~> py ./leetcode.py -t 0 -s 2
 ..
@@ -97,14 +99,9 @@ test_case1:
   Passed: Solution2
 test_case2:
   Passed: Solution2
-
 ----------------------------------------------------------------------
-Ran 2 tests in 0.005s
-
-OK
 ```
 
-> It is highly possible that some input or output scenario aren't handled, as there are thousands of questions and I'm not working in meta so I won't bother adding support until I encounter them myself.
-
 ## License
-[MIT](LICENSE)
+
+This project is licensed under the terms of the [MIT license](LICENSE).
