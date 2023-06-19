@@ -10,8 +10,9 @@ class AbstractTest(unittest.TestCase):
 
     def run_assert(self, assert_func, args, expected_output, **kwargs):
         """Run an assert function for each solution and add the solution number to the error message."""
+        # temporily store raised error to prevent loop interuption when exception occur
         logger = Logger.getInstance()
-        errors = [] # temporily store raised error to prevent loop interuption when exception occur
+        errors = [] 
         calling_function_name = inspect.stack()[1][3]
         logger.log(calling_function_name + ":")
         for solution_class in self.solution_classes:

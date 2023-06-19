@@ -1,9 +1,10 @@
 
 from abc import ABCMeta, abstractmethod
+from typing import Any, List
 
 
 class SolutionMeta(ABCMeta):
-    solutions = []
+    solutions: List[Any]= []
     counter = 1
 
     def __init__(cls, name, bases, attrs):
@@ -15,7 +16,7 @@ class SolutionMeta(ABCMeta):
 
 
 class AbstractSolution(metaclass=SolutionMeta):
-    solution_number = None
+    solution_number: int | None = None
 
     @abstractmethod
     def solve(self, input):
