@@ -19,7 +19,7 @@ def main():
 
     args = parser.parse_args()
 
-    if args.run is None and args.test is None:
+    if args.run is None and args.test is None and args.create is None:
         args = argparse.Namespace()
         if history_handler.last_type == "t":
             args.test = history_handler.last_problem
@@ -32,7 +32,7 @@ def main():
         args.name = ""
 
         print("No valid problem number provided, using history.")
-        print(f"History: -{history_handler.last_type} {history_handler.last_problem}" + 
+        print(f"./leetcode.py -{history_handler.last_type} {history_handler.last_problem}" + 
               (f" -s {args.solution}" if args.solution else "") + "\n")
 
     else:
