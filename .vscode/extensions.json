@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "donjayamanne.python-environment-manager",
+        "njqdev.vscode-python-typehint",
+        "mgesbert.python-path",
+        "kevinrose.vsc-python-indent",
+        "njpwerner.autodocstring",
+        "formulahendry.code-runner",
+        "visualstudioexptteam.vscodeintellicode",
+        "ms-python.isort"
+    ]
+}
